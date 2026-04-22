@@ -1,21 +1,33 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { connectDB } from './config/db.js';
-import userRouter from './src/routes/user.routes.js';
+// index.js
 
-dotenv.config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use("/auth", userRouter);
 
-const startServer = async () => {
-    await connectDB();
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-};
+// ✅ Test route (IMPORTANT - Cannot GET / fix)
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
 
-startServer();
+// ✅ Sample API route (check working)
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API is working ✅" });
+});
+
+// ✅ Example auth routes (agar tumhare hain to import karo)
+// const authRoutes = require("./src/routes/authRoutes");
+// app.use("/api/auth", authRoutes);
+
+// Port
+const PORT = process.env.PORT || 5000;
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
